@@ -46,6 +46,7 @@ def chainer(
         eventrrqs=[],
         cuts=[],
         eventcuts=[],
+        selections=[]
         cutrev='current'):
 
     # deal with data chains
@@ -89,10 +90,10 @@ def chainer(
 
     # build cut selection
     cut_string = None
-    if len(cuts + eventcuts) != 0:
+    if len(selections) != 0:
         cut_string = reduce(
             lambda x, y: x & y,
             map(
                 Cut,
-                ('{}'.format(i) for i in cuts + eventcuts)))
+                selections))
     return tree2rec(dchain, branches=rrqs+rqs, selection=cut_string)
