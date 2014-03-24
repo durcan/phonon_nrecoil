@@ -46,7 +46,7 @@ def chainer(
         eventrrqs=[],
         cuts=[],
         eventcuts=[],
-        selections=[]
+        selections=[],
         cutrev='current'):
 
     # deal with data chains
