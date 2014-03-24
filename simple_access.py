@@ -14,7 +14,8 @@ def expander(
         cut='',
         cutrev=''):
 
-    print pbase = base + data + '/' + cutrev + dtype + '/' + cut
+    pbase = base + data + '/' + cutrev + dtype + '/' + cut
+    print pbase
 
     if 'rrqDir' in tree:
         fname = 'calib_Prodv5-3_{}_ba.root'
