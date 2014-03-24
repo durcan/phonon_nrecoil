@@ -52,7 +52,7 @@ def chainer(
     dchain = ROOT.TChain()  # initialize data chain
     dlist = []
     # initialize first chain with calibebent trees (because they are small)
-    dpaths = expander(dtype=dtype, tree='rrqDir/calibevnet', base=base, data=data, productions=productions)
+    dpaths = expander(dtype=dtype, tree='rrqDir/calibevent', base=base, data=data, productions=productions)
     map(dchain.Add, dpaths)
     # then make a list of chains for the other types
     for i, v in {
