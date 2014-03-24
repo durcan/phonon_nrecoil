@@ -55,10 +55,10 @@ def chainer(
     dpaths = expander(dtype=dtype, tree='rrqDir/calibevnet', base=base, data=data, productions=productions)
     map(dchain.Add, dpaths)
     # then make a list of chains for the other types
-    for i, v in {
+    for i, v in enumerate({
             'rrqDir/calibzip{}': rrqs,
             'rqDir/zip{}': rqs,
-            'rqDir/eventTree': eventrqs}:
+            'rqDir/eventTree': eventrqs}):
         if len(v) != 0:
             tmp = ROOT.TChain()
             dpaths = expander(
@@ -73,7 +73,7 @@ def chainer(
 
     # deal with cuts
     clist = []
-    for i, v in {'cutdir/cutzip{}': cuts, 'cutDir/cutevent': eventcuts}:
+    for i, v in enumerate({'cutdir/cutzip{}': cuts, 'cutDir/cutevent': eventcuts}):
         for c in v:
             cpaths = expander(
                 dtype=dtype,
