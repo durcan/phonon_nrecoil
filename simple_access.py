@@ -86,6 +86,7 @@ def chainer(
             tmp = ROOT.TChain()
             map(tmp.Add, cpaths)
             clist.append(tmp)
+    print "adding cuts: " clist
     map(dchain.AddFriend, clist)
 
     # build cut selection
