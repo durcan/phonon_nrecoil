@@ -96,4 +96,4 @@ def chainer(
             map(
                 Cut,
                 selections))
-    return tree2rec(dchain, branches=rrqs+rqs, selection=cut_string)
+    return tree2rec(dchain, branches=rrqs+rqs, selection=cut_string), dchain
