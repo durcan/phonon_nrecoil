@@ -69,7 +69,7 @@ def chainer(
             map(tmp.Add, dpaths)
             dlist.append(tmp)
     # friend each other data tree with the original chain
-    map(dchain.AddFriends, dlist)
+    map(dchain.AddFriend, dlist)
 
     # deal with cuts
     clist = []
@@ -85,7 +85,7 @@ def chainer(
             tmp = ROOT.TChain()
             map(tmp.Add, cpaths)
             clist.append(tmp)
-    map(dchain.AddFriends, clist)
+    map(dchain.AddFriend, clist)
 
     # build cut selection
     cut_string = reduce(
