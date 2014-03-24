@@ -1,8 +1,12 @@
 from glob import iglob
+import ROOT
+import rootpy
+from rootpy.tree import Cut
+from root_numpy import tree2rec
 
 
 def expander(
-        dtype='ba',
+        dtype='cf',
         tree='rrqDir/calibzip1',
         base='/tera2/data3/cdmsbatsProd/R133/dataReleases/Prodv5-3_June2013/merged/',
         data='all',
@@ -10,7 +14,7 @@ def expander(
         cut='',
         cutrev=''):
 
-    pbase = base + data + '/' + cutrev + dtype + '/' + cut
+    print pbase = base + data + '/' + cutrev + dtype + '/' + cut
 
     if 'rrqDir' in tree:
         fname = 'calib_Prodv5-3_{}_ba.root'
@@ -24,4 +28,21 @@ def expander(
     else:
         ppath = (pbase + fname.format(i) for i in productions)
 
-    return (i + '/' + tree for i in ppath)
+    result = [i + '/' + tree for i in ppath]
+    result.sort()
+
+    return result
+
+
+def chainer(
+        dtype='cf',
+        tree='rrqDir/calibzip1',
+        base='/tera2/data3/cdmsbatsProd/R133/dataReleases/Prodv5-3_June2013/merged/',
+        data='all',
+        rqs=[],
+        rrqs=[],
+        cuts=[],
+        eventcuts=[],
+        cutrev='current'):
+
+    return
