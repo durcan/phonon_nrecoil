@@ -88,9 +88,11 @@ def chainer(
     map(dchain.AddFriend, clist)
 
     # build cut selection
-    cut_string = reduce(
-        lambda x, y: x & y,
-        map(
-            Cut,
-            ('{}'.format(i) for i in cuts + eventcuts)))
+    cut_string = None
+    if len(cuts + eventcuts) != 0:
+        cut_string = reduce(
+            lambda x, y: x & y,
+            map(
+                Cut,
+                ('{}'.format(i) for i in cuts + eventcuts)))
     return tree2rec(dchain, branches=rrqs+rqs, selection=cut_string)
