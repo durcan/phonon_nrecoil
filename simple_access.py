@@ -18,11 +18,11 @@ def expander(
     print pbase
 
     if 'rrqDir' in tree:
-        fname = 'calib_Prodv5-3_{}_ba.root'
+        fname = 'calib_Prodv5-3_{}_??.root'
     elif 'rqDir' in tree:
-        fname = 'merge_Prodv5-3_{}_ba.root'
+        fname = 'merge_Prodv5-3_{}_??.root'
     elif 'cutDir' in tree:
-        fname = cut + '_{}_ba.root'
+        fname = cut + '_{}_??.root'
     if productions == ['all']:
         prod = '0[0-9][0-9][0-9][0-9][0-9]?'
         ppath = iglob(pbase + fname.format(prod))
