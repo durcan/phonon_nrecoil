@@ -74,7 +74,7 @@ def chainer(
 
     # deal with cuts
     clist = []
-    for i, v in {'cutdir/cutzip{}': cuts, 'cutDir/cutevent': eventcuts}.iteritems():
+    for i, v in {'cutDir/cutzip{}': cuts, 'cutDir/cutevent': eventcuts}.iteritems():
         for c in v:
             cpaths = expander(
                 dtype=dtype,
