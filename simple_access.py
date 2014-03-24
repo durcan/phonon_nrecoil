@@ -73,7 +73,7 @@ def chainer(
     map(dchain.AddFriend, dlist)
 
     # deal with cuts
-    clist = []
+    clist = {}
     for i, v in {'cutDir/cutzip{}': cuts, 'cutDir/cutevent': eventcuts}.iteritems():
         for c in v:
             cpaths = expander(
@@ -85,9 +85,9 @@ def chainer(
                 cutrev='current/')
             tmp = ROOT.TChain()
             map(tmp.Add, cpaths)
-            clist.append(tmp)
+            clist[c] = tmp
     print "adding cuts: ", clist
-    map(dchain.AddFriend, clist)
+    print [dchain.AddFriend(v, alias=k) for k, v in clist.iteritems()]
 
     # build cut selection
     cut_string = None
