@@ -15,9 +15,8 @@ def expander(
         cutrev=''):
 
     pbase = base + data + '/' + cutrev + dtype + '/' + cut
-    print pbase
 
-    if 'rrqDir' in tree:
+    if 'rrqDir/calib' in tree:
         fname = 'calib_Prodv5-3_{}_??.root'
     elif 'rqDir' in tree:
         fname = 'merge_Prodv5-3_{}_??.root'
@@ -37,13 +36,61 @@ def expander(
 
 def chainer(
         dtype='cf',
-        tree='rrqDir/calibzip1',
+        izip=1,
         base='/tera2/data3/cdmsbatsProd/R133/dataReleases/Prodv5-3_June2013/merged/',
         data='all',
+        productions=['all'],
         rqs=[],
+        eventrqs=[],
         rrqs=[],
+        eventrrqs=[],
         cuts=[],
         eventcuts=[],
         cutrev='current'):
 
-    return
+    # deal with data chains
+    dchain = ROOT.TChain()  # initialize data chain
+    dlist = []
+    # initialize first chain with calibebent trees (because they are small)
+    dpaths = expander(dtype=dtype, tree='rrqDir/calibevnet', base=base, data=data, productions=productions)
+    map(dchain.Add, dpaths)
+    # then make a list of chains for the other types
+    for i, v in {
+            'rrqDir/calibzip{}': rrqs,
+            'rqDir/zip{}': rqs,
+            'rqDir/eventTree': eventrqs}:
+        if len(v) != 0:
+            tmp = ROOT.TChain()
+            dpaths = expander(
+                dtype=dtype,
+                tree=i.format(izip),
+                base=base,
+                productions=productions)
+            map(tmp.Add, dpaths)
+            dlist.append(tmp)
+    # friend each other data tree with the original chain
+    map(dchain.AddFriends, dlist)
+
+    # deal with cuts
+    clist = []
+    for i, v in {'cutdir/cutzip{}': cuts, 'cutDir/cutevent': eventcuts}:
+        for c in v:
+            cpaths = expander(
+                dtype=dtype,
+                tree=i.format(izip),
+                base=base,
+                productions=productions,
+                cut=c + '/',
+                cutrev='current/')
+            tmp = ROOT.TChain()
+            map(tmp.Add, cpaths)
+            clist.append(tmp)
+    map(dchain.AddFriends, clist)
+
+    # build cut selection
+    cut_string = reduce(
+        lambda x, y: x & y,
+        map(
+            Cut,
+            ('{}'.format(i) for i in cuts + eventcuts)))
+    return tree2rec(dchain, branches=rrqs+rqs, selection=cut_string)
