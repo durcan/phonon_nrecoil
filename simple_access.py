@@ -22,7 +22,7 @@ def expander(
     elif 'rqDir' in tree:
         fname = 'merge_Prodv5-3_{}_??.root'
     elif 'cutDir' in tree:
-        fname = cut + '_{}_??.root'
+        fname = cut.rstrip('/') + '_{}_??.root'
     if productions == ['all']:
         prod = '0[0-9][0-9][0-9][0-9][0-9]?'
         ppath = iglob(pbase + fname.format(prod))
