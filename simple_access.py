@@ -24,4 +24,4 @@ def expander(
     else:
         ppath = (pbase + fname.format(i) for i in productions)
 
-    return ppath
+    return (i + '/' + tree for i in ppath)
