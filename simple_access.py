@@ -77,6 +77,7 @@ def chainer(
     for i, v in {'cutDir/cutzip{}': cuts, 'cutDir/cutevent': eventcuts}.iteritems():
         for c in v:
             cpaths = expander(
+                data='cuts'
                 dtype=dtype,
                 tree=i.format(izip),
                 base=base,
@@ -84,6 +85,7 @@ def chainer(
                 cut=c + '/',
                 cutrev='current/')
             tmp = ROOT.TChain()
+            print "cpaths ", cpaths
             map(tmp.Add, cpaths)
             clist[c] = tmp
     print "adding cuts: ", clist
