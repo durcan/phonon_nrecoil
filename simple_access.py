@@ -18,10 +18,15 @@ def expander(
 
     pbase = base + data + '/' + cutrev + dtype + '/' + cut
 
+    if 'bg_permitted' in dtype:
+        prefix = 'blinded_'
+    else:
+        prefix = ''
+
     if 'rrqDir/calib' in tree:
-        fname = 'calib_Prodv5-3_{}_??.root'
+        fname = prefix + 'calib_Prodv5-3_{}_??.root'
     elif 'rqDir' in tree:
-        fname = 'merge_Prodv5-3_{}_??.root'
+        fname = prefix + 'merge_Prodv5-3_{}_??.root'
     elif 'cutDir' in tree:
         fname = cut.rstrip('/') + '_{}_??.root'
     if productions == ['all']:
