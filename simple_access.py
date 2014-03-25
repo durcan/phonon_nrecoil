@@ -3,6 +3,7 @@ import ROOT
 import rootpy
 from rootpy.tree import Cut
 from root_numpy import tree2rec
+import pandas as pd
 
 
 def expander(
@@ -53,7 +54,11 @@ def chainer(
     dchain = ROOT.TChain()  # initialize data chain
     dlist = []
     # initialize first chain with calibebent trees (because they are small)
-    dpaths = expander(dtype=dtype, tree='rrqDir/calibevent', base=base, data=data, productions=productions)
+    dpaths = expander(
+        dtype=dtype,
+        tree='rrqDir/calibevent',
+        base=base, data=data,
+        productions=productions)
     map(dchain.Add, dpaths)
     # then make a list of chains for the other types
     for i, v in {
@@ -74,7 +79,9 @@ def chainer(
 
     # deal with cuts
     clist = {}
-    for i, v in {'cutDir/cutzip{}': cuts, 'cutDir/cutevent': eventcuts}.iteritems():
+    for i, v in {
+            'cutDir/cutzip{}': cuts,
+            'cutDir/cutevent': eventcuts}.iteritems():
         for c in v:
             cpaths = expander(
                 data='cuts',
@@ -99,4 +106,14 @@ def chainer(
             map(
                 Cut,
                 selections))
-    return tree2rec(dchain, branches=rrqs+rqs+eventrqs+eventrrqs, selection=cut_string), dchain
+    # extract the desired variables from the file turn into a Data Frame
+    rows = ['SeriesNumber', 'EventNumber']
+    df = pd.pivot_table(
+        pd.DataFrame(
+            tree2rec(
+                dchain,
+                branches=rrqs+rqs+eventrqs+eventrrqs+rows,
+                selection=cut_string)),
+        rows=rows)
+
+    return df, dchain
