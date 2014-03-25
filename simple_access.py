@@ -85,9 +85,11 @@ def chainer(
                 cut=c + '/',
                 cutrev='current/')
             tmp = ROOT.TChain()
+            print "cpaths ", cpaths
             map(tmp.Add, cpaths)
             clist[c] = tmp
-
+    print "adding cuts: ", clist
+    print [dchain.AddFriend(v, k) for k, v in clist.iteritems()]
 
     # build cut selection
     cut_string = None
@@ -97,4 +99,4 @@ def chainer(
             map(
                 Cut,
                 selections))
-    return tree2rec(dchain, branches=rrqs+rqs+eventrqs+eventrrqs, selection=cut_string)
+    return tree2rec(dchain, branches=rrqs+rqs+eventrqs+eventrrqs, selection=cut_string), dchain
