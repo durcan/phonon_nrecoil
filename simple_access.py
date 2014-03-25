@@ -116,4 +116,4 @@ def chainer(
                 selection=cut_string)),
         rows=rows)
 
-    return df, dchain
+    return df
