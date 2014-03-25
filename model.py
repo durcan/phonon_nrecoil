@@ -1,6 +1,8 @@
 import numpy as np
 import scipy.optimize as op
-
+import matplotlib.pyplot as pl
+from matplotlib.ticker import MaxNLocator
+import triangle
 
 class pmodel(object):
 
@@ -45,3 +47,36 @@ class pmodel(object):
             return -np.inf
         else:
             return lp + self.lnlike(theta, x, y)
+
+    def runner_graph(self, sampler):
+        pl.clf()
+        fig, axes = pl.subplots(4, 1, sharex=True, figsize=(8, 9))
+        axes[0].plot(sampler.chain[:, :, 0].T, color="k", alpha=0.4)
+        axes[0].yaxis.set_major_locator(MaxNLocator(5))
+        axes[0].set_ylabel("$m$")
+
+        axes[1].plot(sampler.chain[:, :, 1].T, color="k", alpha=0.4)
+        axes[1].yaxis.set_major_locator(MaxNLocator(5))
+        axes[1].set_ylabel("$b$")
+
+        axes[2].plot(np.exp(sampler.chain[:, :, 2]).T, color="k", alpha=0.4)
+        axes[2].yaxis.set_major_locator(MaxNLocator(5))
+        axes[2].set_ylabel("$lnc$")
+
+        axes[3].plot(np.exp(sampler.chain[:, :, 2]).T, color="k", alpha=0.4)
+        axes[3].yaxis.set_major_locator(MaxNLocator(5))
+        axes[3].set_ylabel("$lnd$")
+
+        axes[3].set_xlabel("step number")
+
+        pl.show()
+
+    def corner_graph(self, sampler, burnin):
+
+        samples = sampler.chain[:, burnin:, :].reshape((-1, 4))
+
+        fig = triangle.corner(
+            samples,
+            labels=["$m$", "$b$", "$\ln\,c$", "$\ln\,d$"])
+        pl.show()
+
