@@ -4,6 +4,7 @@ import rootpy
 from rootpy.tree import Cut
 from root_numpy import tree2rec
 import pandas as pd
+from time import time
 
 
 def expander(
@@ -50,6 +51,9 @@ def chainer(
         selections=[],
         cutrev='current'):
 
+    # time call
+    t1 = time()
+
     # deal with data chains
     dchain = ROOT.TChain()  # initialize data chain
     dlist = []
@@ -92,11 +96,11 @@ def chainer(
                 cut=c + '/',
                 cutrev='current/')
             tmp = ROOT.TChain()
-            print "cpaths ", cpaths
+            #print "cpaths ", cpaths
             map(tmp.Add, cpaths)
             clist[c] = tmp
-    print "adding cuts: ", clist
-    print [dchain.AddFriend(v, k) for k, v in clist.iteritems()]
+    #print "adding cuts: ", clist
+    #print [dchain.AddFriend(v, k) for k, v in clist.iteritems()]
 
     # build cut selection
     cut_string = None
@@ -112,8 +116,9 @@ def chainer(
         pd.DataFrame(
             tree2rec(
                 dchain,
-                branches=rrqs+rqs+eventrqs+eventrrqs+rows,
+                branches=list(set(rrqs+rqs+eventrqs+eventrrqs+rows)),
                 selection=cut_string)),
         rows=rows)
-
+    t2 = time()
+    print "Load time: ", t2-t1, "s"
     return df
