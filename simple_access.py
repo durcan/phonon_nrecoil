@@ -100,7 +100,7 @@ def chainer(
             map(tmp.Add, cpaths)
             clist[c] = tmp
     #print "adding cuts: ", clist
-    #print [dchain.AddFriend(v, k) for k, v in clist.iteritems()]
+    [dchain.AddFriend(v, k) for k, v in clist.iteritems()]
 
     # build cut selection
     cut_string = None
