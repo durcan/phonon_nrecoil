@@ -32,7 +32,7 @@ class pmodel(object):
             args=(x, y))
         return result
 
-    def lnprior(theta):
+    def lnprior(self, theta):
         m, b, lnc, lnd = theta
         if -1.0 < m < 1.0 and -1.0 < b < 1.0 and -10.0 < lnc < 10.0 and -10.0 < lnd < 10.0:
             return 0.0
