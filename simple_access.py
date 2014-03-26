@@ -54,7 +54,8 @@ def chainer(
         cuts=[],
         eventcuts=[],
         selections=[],
-        cutrev='current'):
+        cutrev='current',
+        load_cut_to_ram=False):
 
     # time call
     t1 = time()
@@ -117,11 +118,14 @@ def chainer(
                 selections))
     # extract the desired variables from the file turn into a Data Frame
     rows = ['SeriesNumber', 'EventNumber']
+    branches = rrqs+rqs+eventrqs+eventrrqs+rows
+    if load_cut_to_ram:
+        branches += cuts+eventcuts
     df = pd.pivot_table(
         pd.DataFrame(
             tree2rec(
                 dchain,
-                branches=list(set(rrqs+rqs+eventrqs+eventrrqs+rows)),
+                branches=list(set(branches)),
                 selection=cut_string)),
         rows=rows)
     t2 = time()
