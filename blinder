@@ -27,7 +27,7 @@ def main(cutname, cutfile, infile, outfile):
             else:
                 cut = ''
             tree_copy = tree.CopyTree(cut)
-            tree_copy.Fill()
+            #tree_copy.Fill()
             tree_copy.Write()
             print "{}/{}: in".format(d, t),tree.GetEntries()," out", tree_copy.GetEntries()
             tree.IsA().Destructor(tree)
