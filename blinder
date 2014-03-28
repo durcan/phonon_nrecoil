@@ -28,10 +28,10 @@ def main(cutname, cutfile, infile, outfile):
             else:
                 cut = ''
             tree_copy = tree.CopyTree(cut)
+            tree_copy.Write("", ROOT.TObject.kOverwrite)
             if ct != []:
                 tree_copy.RemoveFriend(ctree)
                 tree.RemoveFriend(ctree)
-            tree_copy.Write("", ROOT.TObject.kOverwrite)
             print "{}/{}: in".format(d, t),tree.GetEntries()," out", tree_copy.GetEntries()
             tree.IsA().Destructor(tree)
             tree_copy.IsA().Destructor(tree_copy)
