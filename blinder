@@ -42,4 +42,4 @@ def main(cutname, cutfile, infile, outfile):
 
 if __name__ == '__main__':
     user_args = sys.argv[1:]
-    main(*user_args)ss
+    main(*user_args)
