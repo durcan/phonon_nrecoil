@@ -2,6 +2,7 @@
 import sys
 import rootpy
 from rootpy.io import root_open
+import ROOT
 
 
 def main(cutname, cutfile, infile, outfile):
@@ -29,7 +30,7 @@ def main(cutname, cutfile, infile, outfile):
             tree_copy = tree.CopyTree(cut)
             tree_copy.RemoveFriend(ctree)
             tree.RemoveFriend(ctree)
-            tree_copy.Write()
+            tree_copy.Write("", ROOT.TObject.kOverwrite)
             print "{}/{}: in".format(d, t),tree.GetEntries()," out", tree_copy.GetEntries()
             tree.IsA().Destructor(tree)
             tree_copy.IsA().Destructor(tree_copy)
@@ -41,4 +42,4 @@ def main(cutname, cutfile, infile, outfile):
 
 if __name__ == '__main__':
     user_args = sys.argv[1:]
-    main(*user_args)
+    main(*user_args)ss
