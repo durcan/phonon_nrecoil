@@ -21,7 +21,7 @@ def main(infile, outfile):
         for t in tl:
             # tree is original data tree
             tree = f[d][t]
-            print tree.branchnames
+            #print tree.branchnames
 
             df = pd.DataFrame(
                 tree2rec(
