@@ -18,7 +18,7 @@ class pmodel(object):
 
     def ln_sig_model(self, *args):
         # sigma has a c/x + d model
-        lnc, d, lne x = args
+        lnc, d, lne, x = args
         return np.true_divide(np.exp(lnc), x) + d*x + np.exp(lne)
 
     def lnlike(self, theta, x, y):

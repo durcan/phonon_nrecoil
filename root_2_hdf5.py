@@ -21,11 +21,13 @@ def main(infile, outfile):
         for t in tl:
             # tree is original data tree
             tree = f[d][t]
+            print tree.branchnames
 
-            df = pd.pivot_table(
-                pd.DataFrame(
-                    tree2rec(
-                        tree)))
+            df = pd.DataFrame(
+                tree2rec(
+                    tree,
+                    branches=tree.branchnames))
+            print "writing to: {}/{}".format(d, t), tree.GetEntries()
             f_store.append('{}/{}'.format(d, t), df)
             tree.IsA().Destructor(tree)
     f_store.close()
