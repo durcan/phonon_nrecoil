@@ -6,33 +6,45 @@ import ROOT
 
 
 def main(cutname, cutfile, infile, outfile):
-
+    # open my data file (f) and my cut file (C)
     c = root_open(cutfile)
     f = root_open(infile)
-
+    # build a dictionary of the file structure
     cdict = {p: t for p, d, t in c if p != ''}
     clist = list(set(cdict['cutDir']))
     dic = {p: t for p, d, t in f if p != ''}
-
+    # open a new file to put the data in after the cut is applied
     f_copy = root_open(outfile, "recreate")
+    # iterate over the directoies
     for d, tl in dic.iteritems():
+        # make directory in new file
         f_copy.mkdir(d)
-        f_copy.cd(d)
+        # iterate over list of trees in the directory
         for t in tl:
+            # tree is original data tree
             tree = f[d][t]
+            # decide if tree is data (dont cut metadata trees)
             ct = [i for i in clist if i[-3:] in t]
             if ct != []:
+                # ctree contains variable we are cutting on
                 ctree = c['cutDir']['cutevent']
                 cut = "{}==0.0".format(cutname)
+                # give our tata tree acctess to the cut varible
                 tree.AddFriend(ctree)
             else:
                 cut = ''
+            # copy data with cut applied to now TTree tree_copy
             tree_copy = tree.CopyTree(cut)
-            tree_copy.Write("", ROOT.TObject.kOverwrite)
+            # if we friended the tree unfriend the cut tree (we dont want to write its variables)
             if ct != []:
                 tree_copy.RemoveFriend(ctree)
                 tree.RemoveFriend(ctree)
+            # make sure we write it to the correct directoy in the new file
+            f_copy.cd(d)
+            # write the tree
+            tree_copy.Write("", ROOT.TObject.kOverwrite)
             print "{}/{}: in".format(d, t),tree.GetEntries()," out", tree_copy.GetEntries()
+            # deal with ROOT mangling python's garbage collector because I HATE YOU ROOT
             tree.IsA().Destructor(tree)
             tree_copy.IsA().Destructor(tree_copy)
         f_copy.cd('')
